@@ -1,14 +1,14 @@
-/*Release Notes: 
+/*Release Notes:
 Allows students to drag the correct herbs into the formula giving feedback
 
-Future Release: 
+Future Release:
 *Sort herbs into alphabetical order
 All formulas and herbs
 Picking which set of formulas or herbs to test
 Add support for single herbs information matching
-Game mode where random patients come in with random disorders
-Include YinYang ratings and reviews that are e-mailed
+***Current development > Game mode where you, the traveler are examined, and must make your medicine.
 
+Include YinYang ratings and reviews that are e-mailed
 Add formula categories and formula functions for testability
 Show what herbs are in the formula when 5 failed attempts have occured
 */
@@ -22,7 +22,7 @@ $(document).ready(function() {
     formula = new Array(),
     add_icon = "<a href='' title='Add this to your formula!' class='ui-icon ui-icon-plus'>Add this!</a>",
     remove_icon = "<a href='' title='Remove this Herb' class='ui-icon  ui-icon-minus'>Remove Herb</a>";
-    
+
     //Place a formula name in the product header
     function pickFormula(formulaName) {
         $("#formula h4").html(formulaName);
@@ -32,7 +32,7 @@ $(document).ready(function() {
     function compareHerbs(HerbDropping, ID) {
         var isRight = false,
         herbs = formula[ID].ingredients.split(", ");
-        
+
         for (x = 0; x < herbs.length; x++) {
             //window.alert("Searching: " + herbs[x]);
             //window.alert("Against: " + HerbDropping);
@@ -48,18 +48,13 @@ $(document).ready(function() {
         //Check if the formula has been filled
         if (herbCount == herbs.length) {
             //Window alert for now...in the future implement into the html
-            window.alert("Congratulations! You've created " + formula[ID].name + "!");
+            window.alert("You take a sip of " + formula[ID].name + " and find it " + forumula[ID].taste + " and " + formula[ID].temp);
             RollFormula(formulaID++);
             //create a function to reset the herbs
         }
         return isRight;
     }
-    
-    function DecocStruc(name, ingredients) {
-        this.name = name;
-        this.ingredients = ingredients;
-    }
-  
+
     //Sort the Stock of Herbs
     function sort_herbStock() {
         var $herbStockli = $herbStock.children('li');
@@ -67,11 +62,11 @@ $(document).ready(function() {
         $herbStockli.sort(function(a, b) {
             var an = a.getAttribute('id'),
             bn = b.getAttribute('id');
-            
+
             if(an > bn) {
                 return 1;
             }
-            
+
             if(an < bn) {
                 return -1;
             }
@@ -82,9 +77,9 @@ $(document).ready(function() {
 
         $herbStockli.detach().appendTo($herbStock);
     }
-    
+
     sort_herbStock();
-    
+
     //Add Swith Case for an HTML selection menu
     /*
     switch(groupSelect) {
@@ -100,16 +95,35 @@ $(document).ready(function() {
         case "Group 10":
     }*/
 
+
+        function DecocStruc(name, ingredients, taste, temp, complexion, condition) {
+            this.name = name;
+            this.ingredients = ingredients;
+            this.taste = taste;
+            this.temp = temp;
+            this.complexion = complexion;
+            this.condition = condition;
+        }
+
+        /****Pull JSON data from separate file
+        $.getJSON("decoctions.json", function(data) {
+          console.log('loaded');
+          $.each(data.formulas, function(index, formulas) {
+              var formula[index] = new DecocStruc(formulas.name, formulas.ingredients, formulas.taste, formulas.temp, formulas.complexion, formulas.condition);
+              console.log(arr)
+            });
+        });****/
+
     // Array of formulas
     formula[0] = new DecocStruc("Sang Ju Yin", "Sang Ye, Ju Hua, Lian Qiao, Bo He, Jie Geng, Xing Ren, Lu Gen, Gan Cao");
     formula[1] = new DecocStruc("Yin Qiao San", "Jin Yin Hua, Lian Qiao, Jie Geng, Nui Bang Zi, Bo He, Don Dou Chi, Jing Jie, Dan Zhu Ye, Lu Gen, Gan Cao");
     formula[2] = new DecocStruc("Bai Hu Tang", "Shi Gao, Zhi Mu, Geng Mi, Gan Cao");
     formula[3] = new DecocStruc("Ma Huang Tang", "Ma Huang, Gui Zhi, Xing Ren, Gan Cao");
     formula[4] = new DecocStruc("Gui Zhi Tang", "Gui Zhi, Bai Shao, Sheng Jiang, Da Zao, Gan Cao");
-    formula[5] = new DecocStruc("Si Jun Zi Tang", "Ren Shen, Bai Zhu, Fu Ling, Gan Cao");    
+    formula[5] = new DecocStruc("Si Jun Zi Tang", "Ren Shen, Bai Zhu, Fu Ling, Gan Cao");
     formula[6] = new DecocStruc("Si Wu Tang", "Shu Di Huang, Bai Shao, Dang Gui, Chuan Xiong");
     formula[7] = new DecocStruc("Er Chen Tang", "Ban Xia, Chen Pi, Fu Ling");
-    
+
     /*Formulas for Excess and Deficiency Wind-Cold
     formula[0] = new DecocStruc("Jing Fang Bai Du San", "Jing Jie, Fang Feng, Qiang Huo, Chai Hu, Qian Hu, Chuan Xiong, Zhi Shi, Fu Ling, Jie Geng, Gan Cao");
     formula[1] = new DecocStruc("Qiang Huo Sheng Shi Tang", "Qiang Huo, Du Huo, Chuan Xiong, Man Jing Zi, Fang Feng, Gao Ben, Gan Cao");
@@ -130,7 +144,7 @@ $(document).ready(function() {
     formula[13] = new DecocStruc("Sheng Mai San", "Ren Shen, Wu Wei Zi, Mai Men Dong")
     formula[14] = new DecocStruc("Dao Chi San", "Sheng Di Huang, Mu Tong, Dan Zhu Ye, Gan Cao Shao");
     formula[15] = new DecocStruc("Si Ni Tang", "Fu Zi, Gan Jiang, Gan Cao");
-    
+
     formula[16] = new DecocStruc("Dang Gui Bu Xue Tang", "Huang Qi, Dang Gui");
     formula[17] = new DecocStruc("Yu Ping Feng San", "Huang Qi, Bai Zhu, Fang Feng");
     formula[18] = new DecocStruc("Jin Ling Zi San", "Chuan Lian Zi, Yan Hu Suo");
@@ -139,16 +153,16 @@ $(document).ready(function() {
     formula[21] = new DecocStruc("Xiang Sha Liu Jun Zi Tang", "Ren Shen, Bai Zhu, Fu Ling, Gan Cao, Ban Xia, Chen Pi, Mu Xiang, Sha Ren");
     formula[22] = new DecocStruc("Bu Zhong Yi Qi Tang", "Huang Qi, Ren Shen, Bai Zhu, Gan Cao, Dang Gui, Chen Pi, Sheng Ma, Chai Hu");
     formula[23] = new DecocStruc("Sheng Ling Bai Zhu San", "Ren Shen, Bai Zhu, Fu Ling, Gan Cao, Shan Yao, Bai Bian Duo, Lian Zi, Yi Yi Ren, Sha Ren, Jie Geng");
-    
+
     formula[24] = new DecocStruc("Gui Pi Tang", "Ren Shen, Huang Qi, Bai Zhu, Fu Ling, Suan Zao Ren, Long Yan Rou, Mu Xiang, Sheng Jiang, Da Zao, Gan Cao, Dang Gui, Yuan Zhi");
     formula[25] = new DecocStruc("Ren Shen Bai Du San", "Qiang Huo, Du Huo, Chuan Xiong, Chai Hu, Bo He, Jie Geng, Zhi Ke, Qian Hu, Ren Shen, Fu Ling, Gan Cao, Sheng Jiang");
     formula[26] = new DecocStruc("Ba Zhen Tang", "Ren Shen, Fu Ling, Bai Zhu, Gan Cao, Shu Di Huang, Bai Shao, Dang Gui, Chuan Xiong");
     formula[27] = new DecocStruc("Shi Quan Da Bu Tang", "Ren Shen, Bai Zhu, Fu Ling, Gan Cao, Shu Di Huang, Bai Shao, Dang Gui, Chuan Xiong, Rou Gui, Huang Qi");
-    formula[28] = new DecocStruc("Du Huo Ji Sheng Wan", "Du Huo, Xi Xin, Fang Feng, Qin Jiao, Sang Ji Sheng, Du Zhong, Niu Xi, Rou Gui"); 
+    formula[28] = new DecocStruc("Du Huo Ji Sheng Wan", "Du Huo, Xi Xin, Fang Feng, Qin Jiao, Sang Ji Sheng, Du Zhong, Niu Xi, Rou Gui");
     formula[29] = new DecocStruc("Xue Fu Zhu Yu Tang", "Tao Ren, Hong Hua, Chuan Xiong, Chi Shao, Dang Gui, Sheng Di Huang, Chuan Niu Xi, Chai Hu, Jie Geng, Zhi Ke, Gan Cao");
     formula[30] = new DecocStruc("Ban Xia Bai Zhu Tian Ma Tang", "Ban Xia, Tian Ma, Bai Zhu, Fu Ling, Chen Pi, Gan Cao, Sheng Jiang, Da Zao");
     formula[31] = new DecocStruc("Chai Hu Shu Gan San", "Chen Pi, Chuan Xiong, Bai Shao, Xiang Fu, Chai Hu, Zhi Ke, Gan Cao");
-    
+
     formula[32] = new DecocStruc("Xing Su San", "Zi Su Ye, Xing Ren, Qian Hu, Jie Geng, Zhi Ke, Chen Pi, Fu Ling, Ban Xia, Sheng Jiang, Da Zao, Gan Cao");
     formula[33] = new DecocStruc("Wen Dan Tang", "Ban Xia, Zhu Ru, Zhi Shi, Chen Pi, Fu Ling, Gan Cao, Sheng Jiang, Da Zao");
     formula[34] = new DecocStruc("Huo Xiang Zheng Qi San", "Huo Xiang, Huo Po, Chen Pi, Zi Su Ye, Bai Zhi, Ban Xia, Da Fu Pi, Bai Zhu, Fu Ling, Jie Geng, Gan Cao, Sheng Jiang, Da Zao");
@@ -166,7 +180,7 @@ $(document).ready(function() {
     formula[45] = new DecocStruc("Qing Hao Bie Jia Tang", "Bie Jia, Qing Hao, Sheng Di Huang, Zhi Mu, Mu Dan Pi");
     formula[46] = new DecocStruc("Gu jing Wan", "Gui Ban, Bai Shao, Huang Qin, Chun Pi, Huang Bai, Xiang Fu");
     formula[47] = new DecocStruc("Gan Mai Da Zao Tang", "Gan Cao, Fu Xiao Mai, Da Zao");
-    
+
     formula[48] = new DecocStruc("Ge Gen Tang", "Ge Gen, Ma Huang, Gui Zhi, Bai Shao, Sheng Jiang, Da Zao, Gan Cao");
     formula[49] = new DecocStruc("Chai Ge Jie Ji Tang", "Chai Hu, Ge Gen, Qiang Huo, Bai Zhi, Huang Qin, Shi Gao, Jie Geng, Bai Shao, Gan Cao, Sheng Jiang, Da Zao");
     formula[50] = new DecocStruc("Ma Xing Shi Gan Tang", "Ma Huang, Shi Gao, Xing Ren, Gan Cao");
@@ -176,22 +190,22 @@ $(document).ready(function() {
     formula[54] = new DecocStruc("Wu Zhu Yu Tang", "Wu Zhu Yu, Sheng Jiang, Ren Shen, Da Zao");
     formula[55] = new DecocStruc("Da Jian Zhong Tang", "Hua Jiao, Gan Jiang, Ren Shen, Yi Tang");
     formula[56] = new DecocStruc("Xiao Jian Zhong Tang", "Gui Zhi, Bai Shao, Sheng Jiang, Da Zao, Gan Cao, Yi Tang");
-    
+
     //Roll a random formula
     function RollFormula(numSet) {
         var numFormulas = formula.length;
-        
+
         if (numSet == 64) {
             formulaID = Math.floor(Math.random() * numFormulas);
         }
         else {
             formulaID = numSet;
         }
-       
+
         $formula.children('ul').children('li').each(function(){
             recycleImage($(this), add_icon);
         });
-         //  recycleImage($formula.children('ul').children('li').first(), add_icon);        
+         //  recycleImage($formula.children('ul').children('li').first(), add_icon);
         $formula.children('ul').children('li').promise().done(function() {
             sort_herbStock();
         });
@@ -199,26 +213,26 @@ $(document).ready(function() {
         //Reset the Counters
         herbCount = 0;
         yinYang = 5;
-        
+
         //Change the heading
          $("#formula h4").html(formula[formulaID].name + " (" + formula[formulaID].ingredients.split(", ").length + ")");
-        
+
         //TODO: Put all of the herbs back on the shelf
     }
-    
+
     RollFormula(0);
-    
+
     $("#formulaSet" ).selectmenu({
         select: function(event, data) {
             RollFormula((data.item.value-1) * 8);
         }
     });
 
-    
+
     //Modal Dialog Setup
-    var $modalDialog = $('<div/>', { 
-        'class': 'exampleModal', 
-        'id': 'exampleModal1' 
+    var $modalDialog = $('<div/>', {
+        'class': 'exampleModal',
+        'id': 'exampleModal1'
     })
     .appendTo('body')
     .dialog({
@@ -229,14 +243,14 @@ $(document).ready(function() {
         show: 'fold',
         modal: true
     });
-    
+
     $("li", "#herbStock").tooltip({
       show: {
         effect: "slideDown",
         delay: 50
       }
     });
-    
+
     // Make herbStock items draggable
     $("li", $herbStock).draggable({
         cancel: "a.ui-icon", // clicking an icon won't initiate dragging
@@ -245,7 +259,7 @@ $(document).ready(function() {
         helper: "clone",
         cursor: "move"
     });
- 
+
     // Make the formula area droppable if the herb dropped is an ingredient
     $formula.droppable({
         //"#herbStock > li"
@@ -268,7 +282,7 @@ $(document).ready(function() {
                         $formula.children("li.ui-widget-content").appendTo($herbStock);
                         $formula.children("li.ui-widget-content").remove();
                     }
-                    
+
                     RollFormula();
                     */
                     RollFormula(formulaID);
@@ -285,22 +299,22 @@ $(document).ready(function() {
           recycleImage(ui.draggable, add_icon);
       }
     });
-    
+
     //$formula.droppable(accept: compareHerbs(ui.draggable.children().attr('title'), formulaID));
-    
+
     // Herb removal function
-    
+
     function deleteImage($item, icon) {
       $item.fadeOut(function() {
         var $list = $("ul", $formula).length ?
           $("ul", $formula) :
           $("<ul class='herbStock ui-helper-reset'/>").appendTo($formula);
- 
+
         $item.find("a.ui-icon-plus").remove();
         $item.appendTo($list).fadeIn(1);
       });
     }
- 
+
     // image recycle function
     function recycleImage($item, icon) {
         $item.fadeOut(function() {
@@ -318,7 +332,7 @@ $(document).ready(function() {
         });
 
     }
- 
+
     // View the Properties of each herb
     function viewProperties($link) {
         var url = $link.attr('href'),
@@ -327,16 +341,16 @@ $(document).ready(function() {
         $modalDialog.dialog({
             title: "Herb Information"
         })
-            
+
         $modalDialog.dialog("open");
-        
+
         /*var src = $link.attr("href"),
         title = $link.siblings("img" ).attr("alt"),
         $modal = $("img[src$='" + src + "']");
- 
+
       if ($modal.length) {
             $modal.dialog("open");
-      } else { 
+      } else {
             var img = $("<img alt='" + title + "' width='384' height='288' style='display: none; padding: 8px;' />")
             .attr("src", src).appendTo( "body");
             setTimeout(function() {
@@ -348,44 +362,44 @@ $(document).ready(function() {
             }, 1 );
       }*/
     }
- 
+
     // resolve the icons behavior with event delegation
     $("ul.herbStock > li").click(function(event) {
       var $item = $(this),
             $target = $(event.target);
-     
+
         if ($target.is("a.ui-icon-plus") ) {
             //TODO: Implement herb Checking
             deleteImage($item, remove_icon);
             window.alert($item);
-        } 
+        }
         else if ($target.is("a.ui-icon-zoomin")) {
             $target.preventDefault;
             viewProperties($target);
-        } 
+        }
         else if ($target.is("a.ui-icon-minus")) {
             recycleImage($item, add_icon);
         }
- 
+
       return false;
     });
-    
+
     $('#btn_hint').click(function(){
         window.alert("Herbs: " + formula[formulaID].ingredients);
     });
-    
+
     $('#btn_next').click(function(){
         if (formulaID <= formula.length){
             RollFormula(formulaID+1);
         }
     });
-    
+
     $('#btn_prev').click(function(){
         if (formulaID > 0){
             RollFormula(formulaID-1);
         }
     });
-                         
+
 /*    Dialog Properties
     $( "#dialog" ).dialog({
       autoOpen: false,
@@ -405,4 +419,3 @@ $(document).ready(function() {
     })
 */
 });
-
