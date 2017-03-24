@@ -1,18 +1,3 @@
-/*Release Notes:
-Allows students to drag the correct herbs into the formula giving feedback
-
-Future Release:
-*Sort herbs into alphabetical order
-All formulas and herbs
-Picking which set of formulas or herbs to test
-Add support for single herbs information matching
-***Current development > Game mode where you, the traveler are examined, and must make your medicine.
-
-Include YinYang ratings and reviews that are e-mailed
-Add formula categories and formula functions for testability
-Show what herbs are in the formula when 5 failed attempts have occured
-*/
-
 $(document).ready(function() {
     var $herbStock = $("#herbStock"),
     $formula = $("#formula"),
