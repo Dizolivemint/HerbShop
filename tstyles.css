@@ -28,11 +28,6 @@ select {
     text-align: center;
 }
 
-#herbStock {
-    float:left;
-    margin: 0, 0px;
-}
-
 .herbStock.custom-state-active {
     background: #eee;
 }
