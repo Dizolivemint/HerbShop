@@ -1,4 +1,4 @@
-# Waifu You
+# Herb Shop
 ## Oasis of Fire
 This game is meant for students of Classical Chinese Herbalism to pick formulas based on Zang-Fu diagnosis.
 
